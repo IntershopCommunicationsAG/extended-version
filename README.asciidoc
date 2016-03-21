@@ -1,0 +1,58 @@
+= Extended Version Library
+:latestRevision: 1.0.0
+:sectnums:
+
+:toc:
+
+== Summary
+This library provides a simple access to a version object. It is based on the Semver library and
+contains changes for specific requirements:
+
+* Version can have three as well four digits
+* Version string consist of the version, the branch name and an additional build extension
+** The extension is a composition of letters and numbers. It is allowed to separate letters and numbers by a point. The numbers must be located on the end of the string. +
+Examples: rc1, dev1, rc.1 dev.1
+** The branch name must be different from the build extension! At the end of this string numbers are allowed, if they are separated through a minus. +
+Examples: feature branch, JIRA-4711
+
+This version object gives you the possibility to handle the different parts of a version (normal, branchdata, builddata).
+Furthermore it is possible to compare version objects. +
+
+
+|===
+|This is an example for the order of versions: +
+1.0.0 < 1.0.1 < 1.0.2-rc.1 < 1.0.2-rc.2 < 1.0.2
+|===
+
+A complete version will be also created if only one or two digits are provided for the initialization.
+|===
+|`10.0 -> 10.0.0` +
+`10   -> 10.0.0`
+|===
+
+== Examples
+[cols="70%,30%", width="50%"]
+|===
+|Release version with three digits | 1.0.0
+|Release version with four digits | 1.0.0.0
+|Milestone version of a feature branch | 1.0.0-JIRA-4711-dev.1
+|Milestone release version | 1.0.0-dev.1
+|Snapshot version | 1.0.0.0-SNAPSHOT
+|===
+
+== Usage
+
+Add the following line to your dependencies:
+
+[source,groovy]
+[subs=+attributes]
+.build.gradle
+----
+
+    compile 'com.intershop.gradle.version:extended-version:{latestRevision}'
+
+----
+
+For more information please check the provided Java doc.
+
+

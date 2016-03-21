@@ -1,0 +1,40 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+}
+
+plugins {
+    // project plugins
+    id 'java-gradle-plugin'
+    id 'groovy'
+    // test coverage
+    id 'jacoco'
+
+    // ide plugin
+    id 'idea'
+
+    // plugin for documentation
+    id 'org.asciidoctor.convert' version '1.5.3'
+
+    // publish plugin
+    id 'maven-publish'
+}
+
+group 'com.intershop.gradle.version'
+description 'Extended version library for version handling'
+
+// plugins should work with JDK 1.7 aslong
+// older INTERSHOP version use this version of JDK
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+dependencies {
+    testCompile('org.spockframework:spock-core:1.0-groovy-2.4') {
+        exclude group: 'org.codehaus.groovy'
+    }
+}
+
+repositories {
+    jcenter()
+}
