@@ -1,8 +1,7 @@
 = Extended Version Library
 :latestRevision: 1.0.0
-:sectnums:
-
 :toc:
+:sectnums:
 
 == Summary
 This library provides a simple access to a version object. It is based on the Semver library and
