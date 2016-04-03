@@ -98,7 +98,7 @@ class VersionParserSpec extends Specification {
 
         then:
         def e = thrown(ParserException)
-        e.message == 'Numeric identifier MUST NOT contain leading zeroes (01)'
+        e.message == 'Numeric identifier MUST NOT contain leading zeroes (01 in 01.0.0.0)'
         e.cause == null
     }
 
@@ -109,7 +109,7 @@ class VersionParserSpec extends Specification {
 
         then:
         def e = thrown(ParserException)
-        e.message == 'Numeric identifier MUST NOT contain leading zeroes (01)'
+        e.message == 'Numeric identifier MUST NOT contain leading zeroes (01 in suffix.01)'
         e.cause == null
     }
 

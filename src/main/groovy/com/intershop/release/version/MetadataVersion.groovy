@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-
-
 package com.intershop.release.version
 
 import groovy.transform.CompileStatic
 
 /**
- * This contains metadata for the version object. This can be a short
+ * This class contains metadata for the version object. It can be a short
  * feature name or the additional version key for feature branches.
  */
 @CompileStatic

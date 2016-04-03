@@ -13,16 +13,13 @@
  * See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-
-
 package com.intershop.release.version
 
 import groovy.transform.CompileStatic
 
 /**
- * This is the version object with all extensions
- * for feature branches. It is based on SemVer and
- * extended for versioning schema with four digits.
+ * This is the version object with all additional extensions for feature branches and milestones.
+ * It is based on SemVer and extended for versioning schema with four digits.
  */
 @CompileStatic
 class Version implements Comparable<Version> {

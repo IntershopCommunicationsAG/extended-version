@@ -144,9 +144,11 @@ class VersionParser {
         }
 
         if(type == VersionType.fourDigits) {
-            return new NormalVersion(parseDigit(vnumbers[0]), parseDigit(vnumbers[1]), parseDigit(vnumbers[2]), parseDigit(vnumbers[3]))
+            return new NormalVersion(parseDigit(vnumbers[0], versionStr), parseDigit(vnumbers[1], versionStr),
+                    parseDigit(vnumbers[2], versionStr), parseDigit(vnumbers[3], versionStr))
         } else {
-            return new NormalVersion(parseDigit(vnumbers[0]), parseDigit(vnumbers[1]), parseDigit(vnumbers[2]))
+            return new NormalVersion(parseDigit(vnumbers[0], versionStr), parseDigit(vnumbers[1], versionStr),
+                    parseDigit(vnumbers[2], versionStr))
         }
     }
 
@@ -206,7 +208,7 @@ class VersionParser {
             if(number.size() > 0) {
                 idents.add(metadataInput - number[0][1])
                 idents.add(number[0][1])
-                int identNo = parseDigit(number[0][1])
+                int identNo = parseDigit(number[0][1], metadataInput)
                 idents[idents.size() - 1] = Integer.toString(identNo)
             } else {
                 idents.add(metadataInput)
@@ -218,12 +220,12 @@ class VersionParser {
         return mdVersion
     }
 
-    private static int parseDigit(String digit) {
+    private static int parseDigit(String digit, String input) {
         if(!digit) {
             throw new ParserException('One part of the version is empty')
         }
         if(digit.length() > 1 && digit.startsWith('0')) {
-            throw new ParserException("Numeric identifier MUST NOT contain leading zeroes (${digit}) of ${input}")
+            throw new ParserException("Numeric identifier MUST NOT contain leading zeroes (${digit} in ${input})")
         }
         try {
             return Integer.parseInt(digit)
