@@ -1,10 +1,9 @@
 = Extended Version Library
 :latestRevision: 1.0.0
 :toc:
-:sectnums:
 
 == Summary
-This library provides a simple access to a version object. It is based on the Semver library and
+This library provides a simple access to a version object. It is based on Semver http://semver.org and
 contains changes for specific requirements:
 
 * Version can have three as well four digits
@@ -55,3 +54,18 @@ Add the following line to your dependencies:
 For more information please check the provided Java doc.
 
 
+== License
+
+Copyright 2015 Intershop Communications AG.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+ limitations under the License.
