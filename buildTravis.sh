@@ -4,17 +4,17 @@
 if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
     if [ "$TRAVIS_TAG" == "" ]; then
         echo -e 'Build Branch for Release => Branch ['$TRAVIS_BRANCH']  Tag ['$TRAVIS_TAG']'
-        ./gradlew test jacocoTestReport build bintrayUpload
+        ./gradlew test build bintrayUpload
     else
         echo -e 'Build Branch for Release => Branch ['$TRAVIS_BRANCH'] and without Tag'
-        ./gradlew test jacocoTestReport build
+        ./gradlew test build
     fi
 else
     if [ "$TRAVIS_TAG" == "" ]; then
         echo -e 'Build Branch for Release => Branch ['$TRAVIS_BRANCH']  Tag ['$TRAVIS_TAG']'
-        ./gradlew test jacocoTestReport build bintrayUpload
+        ./gradlew test build bintrayUpload
     else
         echo -e 'Build Branch for Release => Branch ['$TRAVIS_BRANCH'] and without Tag'
-        ./gradlew test jacocoTestReport build
+        ./gradlew test build
     fi
 fi
