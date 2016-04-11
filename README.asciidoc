@@ -1,28 +1,29 @@
 = Extended Version Library
 :latestRevision: 1.0.0
 :toc:
+:sectnums:
 
 == Summary
-This library provides a simple access to a version object. It is based on Semver http://semver.org and
-contains changes for specific requirements:
+This library provides a simple access to a version object. It is based on the SemVer library and contains changes for specific requirements:
 
-* Version can have three as well four digits
-* Version string consist of the version, the branch name and an additional build extension
-** The extension is a composition of letters and numbers. It is allowed to separate letters and numbers by a point. The numbers must be located on the end of the string. +
-Examples: rc1, dev1, rc.1 dev.1
-** The branch name must be different from the build extension! At the end of this string numbers are allowed, if they are separated through a minus. +
-Examples: feature branch, JIRA-4711
+* A complete version string may consist of the version number, the branch name and an additional build extension
+** See section Examples for details
+* A version number may consist of three as well four decimal numbers separated by a point
+** Examples: 10.1.0 or 10.1.0.2
+* The branch name must be different from the build extension! At the end of this string numbers are allowed, if they are separated through a minus. +
+** Example: JIRA-4711
+* The extension is a combination of letters and numbers. It is allowed to separate letters and numbers by a point. The numbers must be located on the end of the string. +
+** Examples: rc1, dev1, rc.1, dev.1
 
 This version object gives you the possibility to handle the different parts of a version (normal, branchdata, builddata).
 Furthermore it is possible to compare version objects. +
 
-
 |===
-|This is an example for the order of versions: +
+|This is an example for the sequence of versions: +
 1.0.0 < 1.0.1 < 1.0.2-rc.1 < 1.0.2-rc.2 < 1.0.2
 |===
 
-A complete version will be also created if only one or two digits are provided for the initialization.
+A complete version will be created even if only one or two digits are provided for the initialization.
 |===
 |`10.0 -> 10.0.0` +
 `10   -> 10.0.0`
@@ -39,7 +40,6 @@ A complete version will be also created if only one or two digits are provided f
 |===
 
 == Usage
-
 Add the following line to your dependencies:
 
 [source,groovy]
@@ -51,21 +51,14 @@ Add the following line to your dependencies:
 
 ----
 
-For more information please check the provided Java doc.
-
+For more information please check the provided Javadoc.
 
 == License
 
-Copyright 2015 Intershop Communications AG.
+Copyright 2014-2016 Intershop Communications.
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
-     http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
- limitations under the License.
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
