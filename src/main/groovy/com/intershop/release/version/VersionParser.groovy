@@ -66,8 +66,8 @@ class VersionParser {
         String[] parsedVersions = new String[3]
 
         int i = inputStr.indexOf('-')
-        String v = i > 1 ? inputStr.substring(0, i) : inputStr
-        String metadata = i > 1 ? inputStr.substring(i + 1) : ''
+        String v = i > 0 ? inputStr.substring(0, i) : inputStr
+        String metadata = i > 0 ? inputStr.substring(i + 1) : ''
 
         if(v =~ /^\d+\.\d+\.\d+\.\d+/) {
             type = VersionType.fourDigits

@@ -63,6 +63,7 @@ class VersionParserSpec extends Specification {
         '1.0.0-build'                  | '1.0.0-build'                  | VersionType.threeDigits
         '1.0.0-build.1'                | '1.0.0-build.1'                | VersionType.threeDigits
         '10.0.0-JIRA-1234'             | '10.0.0-JIRA-1234'             | VersionType.threeDigits
+        '4-JIRA-1234'                  | '4.0.0-JIRA-1234'              | VersionType.threeDigits
         '10.0.0-JIRA-1234-rc.1'        | '10.0.0-JIRA-1234-rc.1'        | VersionType.threeDigits
         '10.10.10-JIRA-1234-rc.1'      | '10.10.10-JIRA-1234-rc.1'      | VersionType.threeDigits
         '10.10.10-SNAPSHOT'            | '10.10.10-SNAPSHOT'            | VersionType.threeDigits
