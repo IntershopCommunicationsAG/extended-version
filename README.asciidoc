@@ -29,6 +29,9 @@ A complete version will be created even if only one or two digits are provided f
 `10   -> 10.0.0`
 |===
 
+It is also possible to get the original string from the parsed string. This will help to maintain
+versions like 1.1.
+
 == Examples
 [cols="70%,30%", width="50%"]
 |===

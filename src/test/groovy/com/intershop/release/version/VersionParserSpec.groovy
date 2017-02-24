@@ -121,7 +121,7 @@ class VersionParserSpec extends Specification {
 
         then:
         def e = thrown(ParserException)
-        e.message == 'One part of the version is empty'
+        e.message == 'No valid version found in 1..0.0.0!'
         e.cause == null
     }
 
@@ -139,5 +139,21 @@ class VersionParserSpec extends Specification {
 
         then:
         v.toString() == '1.2.0'
+    }
+
+    def 'Parsing non semantic versions 1.0.0.GA should fail'() {
+        when:
+        Version v = VersionParser.parseVersion('1.0.0.GA')
+
+        then:
+        thrown ParserException
+    }
+
+    def 'Parsing semantic versions apache style - toString() should deliver the correct version'() {
+        when:
+        Version v = VersionParser.parseVersion('1.1')
+
+        then:
+        v.toStringFromOrg() == '1.1'
     }
 }

@@ -48,6 +48,11 @@ class Version implements Comparable<Version> {
     private final VersionExtension extension
 
     /**
+     * Original Version-String
+     */
+    private final String orgString
+
+    /**
      * A separator that separates the pre-release
      * version from the normal version.
      */
@@ -184,11 +189,12 @@ class Version implements Comparable<Version> {
      * @param branch data the branch acronym (default value is MetadataVersion.NULL)
      * @param build data the build metadata (default value is MetadataVersion.NULL)
      */
-    Version(NormalVersion normal, MetadataVersion branchData = MetadataVersion.NULL, MetadataVersion buildData = MetadataVersion.NULL, VersionExtension extension = VersionExtension.NONE) {
+    Version(NormalVersion normal, MetadataVersion branchData = MetadataVersion.NULL, MetadataVersion buildData = MetadataVersion.NULL, VersionExtension extension = VersionExtension.NONE, String orgString = '') {
         this.normal     = normal
         this.branchData = branchData
         this.buildData  = buildData
         this.extension  = extension
+        this.orgString  = orgString
     }
 
     /**
@@ -591,10 +597,22 @@ class Version implements Comparable<Version> {
     }
 
     /**
+     * Returns the original input str if available
+     * otherwise it returns toString
+     */
+    public String toStringFromOrg() {
+        if(orgString) {
+            return orgString
+        } else {
+            return this.toString()
+        }
+    }
+
+    /**
      * Returns a new instance of the version object
      */
     public Version clone() {
-        return new Version(this.normalVersion.clone(), this.branchData.clone(), this.buildData.clone(), this.extension)
+        return new Version(this.normalVersion.clone(), this.branchData.clone(), this.buildData.clone(), this.extension, this.orgString)
     }
 
     /**
