@@ -73,7 +73,7 @@ class VersionParser {
             type = VersionType.fourDigits
         }
 
-        def versionMatcher = type == VersionType.threeDigits ? /^\d+\.?\d*\.?\d*/ : /^\d+\.?\d*\.?\d*\.?\d*/
+        def versionMatcher = type == VersionType.threeDigits ? /^\d+\.?\d*\.?\d*$/ : /^\d+\.?\d*\.?\d*\.?\d*$/
 
         if(v =~ versionMatcher) {
             parsedVersions[0] = v
@@ -120,7 +120,7 @@ class VersionParser {
             }
         }
 
-        return new Version(parseVersionStr(parsedVersions[0], type), parseBranchData(parsedVersions[1]), parseBuildData(parsedVersions[2]), extension)
+        return new Version(parseVersionStr(parsedVersions[0], type), parseBranchData(parsedVersions[1]), parseBuildData(parsedVersions[2]), extension, inputStr)
     }
 
     /**
