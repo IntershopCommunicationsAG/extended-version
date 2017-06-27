@@ -30,7 +30,7 @@ class MetadataVersion implements Comparable<MetadataVersion> {
     /**
      * Null metadata, the implementation of the Null Object design pattern.
      */
-    static final MetadataVersion NULL = new NullMetadataVersion();
+    static final MetadataVersion NULL = new NullMetadataVersion()
 
     /**
      * The implementation of the Null Object design pattern.
@@ -40,8 +40,8 @@ class MetadataVersion implements Comparable<MetadataVersion> {
         /**
          * Constructs a {@code NullMetadataVersion} instance.
          */
-        public NullMetadataVersion() {
-            super(null);
+        NullMetadataVersion() {
+            super(null)
         }
 
         /**
@@ -49,14 +49,14 @@ class MetadataVersion implements Comparable<MetadataVersion> {
          */
         @Override
         MetadataVersion increment() {
-            throw new NullPointerException("Metadata version is NULL");
+            throw new NullPointerException("Metadata version is NULL")
         }
 
         /**
          * {@inheritDoc}
          */
         @Override
-        public String toString() {
+        String toString() {
             return ''
         }
     }
@@ -64,7 +64,7 @@ class MetadataVersion implements Comparable<MetadataVersion> {
     /**
      * The array containing the version's identifiers.
      */
-    private final String[] idents;
+    private final String[] idents
 
     /**
      * Constructs a {@code MetadataVersion} instance with identifiers.
@@ -93,7 +93,7 @@ class MetadataVersion implements Comparable<MetadataVersion> {
 
             return new MetadataVersion(ids)
         } else {
-            throw new NullPointerException("Metadata version is NULL");
+            throw new NullPointerException("Metadata version is NULL")
         }
     }
 
@@ -102,7 +102,7 @@ class MetadataVersion implements Comparable<MetadataVersion> {
      *
      * @return new instance of this MetadataVersion
      */
-    public MetadataVersion clone() {
+    MetadataVersion clone() {
         if(toString()) {
             new MetadataVersion((String[])this.idents.clone())
         } else {
@@ -114,13 +114,13 @@ class MetadataVersion implements Comparable<MetadataVersion> {
      * {@inheritDoc}
      */
     @Override
-    public String toString() {
+    String toString() {
         if(idents) {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder()
             for (String ident : idents) {
-                sb.append(ident);
+                sb.append(ident)
             }
-            return sb.toString();
+            return sb.toString()
         } else {
             return ''
         }
@@ -133,9 +133,9 @@ class MetadataVersion implements Comparable<MetadataVersion> {
      * @return {@code true} if the specified string is an integer
      *         or {@code false} otherwise
      */
-    private boolean isInt(String str) {
+    private static boolean isInt(String str) {
         try {
-            Integer.parseInt(str);
+            Integer.parseInt(str)
         } catch (NumberFormatException e) {
             return false
         }
@@ -146,12 +146,12 @@ class MetadataVersion implements Comparable<MetadataVersion> {
      * {@inheritDoc}
      */
     @Override
-    public int compareTo(MetadataVersion other) {
-        if (other.toString() == MetadataVersion.NULL.toString() && this.toString() != MetadataVersion.NULL.toString()) {
+    int compareTo(MetadataVersion other) {
+        if (other.toString() == NULL.toString() && this.toString() != NULL.toString()) {
             return -1
-        } else if(other.toString() == MetadataVersion.NULL.toString() && this.toString() == MetadataVersion.NULL.toString()) {
+        } else if(other.toString() == NULL.toString() && this.toString() == NULL.toString()) {
             return 0
-        } else if(other.toString() != MetadataVersion.NULL.toString() && this.toString() == MetadataVersion.NULL.toString()) {
+        } else if(other.toString() != NULL.toString() && this.toString() == NULL.toString()) {
             return 1
         }
 
@@ -170,15 +170,15 @@ class MetadataVersion implements Comparable<MetadataVersion> {
      *         the {@code Comparable.compareTo} method
      */
     private int compareIdentifierArrays(String[] otherIdents) {
-        int result = 0;
-        int length = getLeastCommonArrayLength(idents, otherIdents);
+        int result = 0
+        int length = getLeastCommonArrayLength(idents, otherIdents)
         for (int i = 0; i < length; i++) {
-            result = compareIdentifiers(idents[i], otherIdents[i]);
+            result = compareIdentifiers(idents[i], otherIdents[i])
             if (result != 0) {
-                break;
+                break
             }
         }
-        return result;
+        return result
     }
 
     /**
@@ -188,7 +188,7 @@ class MetadataVersion implements Comparable<MetadataVersion> {
      * @param arr2 the second array
      * @return the size of the smallest array
      */
-    private int getLeastCommonArrayLength(String[] arr1, String[] arr2) {
+    private static int getLeastCommonArrayLength(String[] arr1, String[] arr2) {
         return (arr1 ? arr1.size() : 0) <= (arr2 ? arr2.size() : 0) ? (arr1 ? arr1.size() : 0) : (arr2 ? arr2.size() : 0)
     }
 
@@ -200,32 +200,32 @@ class MetadataVersion implements Comparable<MetadataVersion> {
      * @return integer result of comparison compatible with
      *         the {@code Comparable.compareTo} method
      */
-    private int compareIdentifiers(String ident1, String ident2) {
+    private static int compareIdentifiers(String ident1, String ident2) {
         if (isInt(ident1) && isInt(ident2)) {
             return Integer.parseInt(ident1) - Integer.parseInt(ident2)
         } else {
-            return ident1.compareTo(ident2)
+            return ident1 <=> ident2
         }
     }
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(Object other) {
+    boolean equals(Object other) {
         if (this == other) {
-            return true;
+            return true
         }
         if (!(other instanceof MetadataVersion)) {
-            return false;
+            return false
         }
-        return compareTo((MetadataVersion) other) == 0;
+        return compareTo((MetadataVersion) other) == 0
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public int hashCode() {
+    int hashCode() {
         if(idents) {
             return Arrays.hashCode(idents)
         } else {

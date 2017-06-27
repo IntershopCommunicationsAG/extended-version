@@ -26,13 +26,13 @@ import groovy.transform.CompileStatic
 enum VersionType {
     threeDigits {
         @Override
-        public String toString() {
+        String toString() {
             return 'three digits'
         }
     },
     fourDigits {
         @Override
-        public String toString() {
+        String toString() {
             return 'four digits'
         }
     }

@@ -56,12 +56,12 @@ class Version implements Comparable<Version> {
      * A separator that separates the pre-release
      * version from the normal version.
      */
-    public static final String METADATA_SEPARATOR = "-"
+    static final String METADATA_SEPARATOR = "-"
 
     /**
      * A mutable builder for the immutable {@code Version} class.
      */
-    public static class Builder {
+    static class Builder {
 
         /**
          * The normal version string.
@@ -93,7 +93,7 @@ class Version implements Comparable<Version> {
          *
          * @param fourDigits - format of version, four or three digits (default value is true)
          */
-        public Builder(VersionType type = VersionType.threeDigits) {
+        Builder(VersionType type = VersionType.threeDigits) {
             this.type = type
             this.normal = type == VersionType.threeDigits ? '1.0.0' : '1.0.0.0'
             this.extension = VersionExtension.NONE
@@ -106,7 +106,7 @@ class Version implements Comparable<Version> {
          * @param normal the string representation of the normal version
          * @param fourDigits - format of version, four or three digits (default value is true)
          */
-        public Builder(String normal, VersionType type = VersionType.threeDigits) {
+        Builder(String normal, VersionType type = VersionType.threeDigits) {
             this.type = type
             this.normal = normal
             this.extension = VersionExtension.NONE
@@ -118,9 +118,9 @@ class Version implements Comparable<Version> {
          * @param normal the string representation of the normal version
          * @return this builder instance
          */
-        public Builder setNormalVersion(String normal, VersionType type = VersionType.threeDigits) {
+        Builder setNormalVersion(String normal, VersionType type = VersionType.threeDigits) {
             this.type = type
-            this.normal = normal;
+            this.normal = normal
             return this
         }
 
@@ -130,7 +130,7 @@ class Version implements Comparable<Version> {
          * @param buildData the string representation of the pre-release version
          * @return this builder instance
          */
-        public Builder setBuildMetadata(String buildData) {
+        Builder setBuildMetadata(String buildData) {
             this.buildData = buildData
             return this
         }
@@ -141,7 +141,7 @@ class Version implements Comparable<Version> {
          * @param prefix the string representation of the build metadata
          * @return this builder instance
          */
-        public Builder setBranchMetadata(String branchData) {
+        Builder setBranchMetadata(String branchData) {
             this.branchData = branchData
             return this
         }
@@ -152,7 +152,7 @@ class Version implements Comparable<Version> {
          * @param string represention of the version extension
          * @return this builder instance
          */
-        public Builder setVersionExtension(String extension) {
+        Builder setVersionExtension(String extension) {
             this.extension = extension
             return this
         }
@@ -162,11 +162,11 @@ class Version implements Comparable<Version> {
          *
          * @return a newly built {@code Version} instance
          */
-        public Version build() {
+        Version build() {
 
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder()
             if (normal) {
-                sb.append(normal);
+                sb.append(normal)
             }
             if (branchData) {
                 sb.append(branchData).append(METADATA_SEPARATOR)
@@ -205,7 +205,7 @@ class Version implements Comparable<Version> {
      * @return a new instance of the {@code Version} class
      * @throws IllegalArgumentException if the input string is {@code NULL} or empty
      */
-    public static Version valueOf(String version) {
+    static Version valueOf(String version) {
         return VersionParser.parseVersion(version)
     }
 
@@ -217,7 +217,7 @@ class Version implements Comparable<Version> {
      * @return a new instance of the {@code Version} class
      * @throws IllegalArgumentException if the input string is {@code NULL} or empty
      */
-    public static Version forString(String version, VersionType type = VersionType.threeDigits) {
+    static Version forString(String version, VersionType type = VersionType.threeDigits) {
         return VersionParser.parseVersion(version, type)
     }
 
@@ -230,7 +230,7 @@ class Version implements Comparable<Version> {
      * @throws IllegalArgumentException if a negative integer is passed
      * @since 0.7.0
      */
-    public static Version forIntegers(int major, VersionType type = VersionType.threeDigits) {
+    static Version forIntegers(int major, VersionType type = VersionType.threeDigits) {
         if(type == VersionType.fourDigits) {
             return new Version(new NormalVersion(major, 0, 0, 0))
         } else {
@@ -248,7 +248,7 @@ class Version implements Comparable<Version> {
      * @throws IllegalArgumentException if a negative integer is passed
      * @since 0.7.0
      */
-    public static Version forIntegers(int major, int minor, VersionType type = VersionType.threeDigits) {
+    static Version forIntegers(int major, int minor, VersionType type = VersionType.threeDigits) {
         if(type == VersionType.fourDigits) {
             return new Version(new NormalVersion(major, minor, 0, 0))
         } else {
@@ -267,7 +267,7 @@ class Version implements Comparable<Version> {
      * @throws IllegalArgumentException if a negative integer is passed
      * @since 0.7.0
      */
-    public static Version forIntegers(int major, int minor, int patch, VersionType type = VersionType.threeDigits) {
+    static Version forIntegers(int major, int minor, int patch, VersionType type = VersionType.threeDigits) {
         if(type == VersionType.fourDigits) {
             return new Version(new NormalVersion(major, minor, patch, 0))
         } else {
@@ -286,8 +286,8 @@ class Version implements Comparable<Version> {
      * @return a new instance of the {@code Version} class
      * @throws IllegalArgumentException if a negative integer is passed
      */
-    public static Version forIntegers(int major, int minor, int patch, int hotfix) {
-        return new Version(new NormalVersion(major, minor, patch, hotfix));
+    static Version forIntegers(int major, int minor, int patch, int hotfix) {
+        return new Version(new NormalVersion(major, minor, patch, hotfix))
     }
 
 
@@ -296,7 +296,7 @@ class Version implements Comparable<Version> {
      *
      * @return a new instance of the {@code Version} class
      */
-    public Version incrementMajorVersion(String branchData = '', String buildData = '', String versionExtension = '') {
+    Version incrementMajorVersion(String branchData = '', String buildData = '', String versionExtension = '') {
         MetadataVersion branch = MetadataVersion.NULL
         MetadataVersion build = MetadataVersion.NULL
         VersionExtension extension = VersionExtension.NONE
@@ -324,7 +324,7 @@ class Version implements Comparable<Version> {
      *
      * @return a new instance of the {@code Version} class
      */
-    public Version incrementMinorVersion(String branchData = '', String buildData = '', String versionExtension = '') {
+    Version incrementMinorVersion(String branchData = '', String buildData = '', String versionExtension = '') {
         MetadataVersion branch = MetadataVersion.NULL
         MetadataVersion build = MetadataVersion.NULL
         VersionExtension extension = VersionExtension.NONE
@@ -352,7 +352,7 @@ class Version implements Comparable<Version> {
      *
      * @return a new instance of the {@code Version} class
      */
-    public Version incrementPatchVersion(String branchData = '', String buildData = '', String versionExtension = '') {
+    Version incrementPatchVersion(String branchData = '', String buildData = '', String versionExtension = '') {
         MetadataVersion branch = MetadataVersion.NULL
         MetadataVersion build = MetadataVersion.NULL
         VersionExtension extension = VersionExtension.NONE
@@ -380,7 +380,7 @@ class Version implements Comparable<Version> {
      *
      * @return a new instance of the {@code Version} class
      */
-    public Version incrementHotfixVersion(String branchData = '', String buildData = '', String versionExtension = '') {
+    Version incrementHotfixVersion(String branchData = '', String buildData = '', String versionExtension = '') {
         MetadataVersion branch = MetadataVersion.NULL
         MetadataVersion build = MetadataVersion.NULL
         VersionExtension extension = VersionExtension.NONE
@@ -407,7 +407,7 @@ class Version implements Comparable<Version> {
      * Increment latest non 0 digit
      * return a new instance of the {@code Version} class
      */
-    public Version incrementLatest(DigitPos pos = normal.versionType == VersionType.threeDigits ? DigitPos.PATCH : DigitPos.HOTFIX,
+    Version incrementLatest(DigitPos pos = normal.versionType == VersionType.threeDigits ? DigitPos.PATCH : DigitPos.HOTFIX,
                                    String branchData = '', String buildData = '', String versionExtension = '') {
         MetadataVersion branch = MetadataVersion.NULL
         MetadataVersion build = MetadataVersion.NULL
@@ -439,7 +439,7 @@ class Version implements Comparable<Version> {
      * Increment special pos
      * return a new instance of the {@code Version} class
      */
-    public Version incrementVersion(DigitPos increment = normal.versionType == VersionType.threeDigits ? DigitPos.PATCH : DigitPos.HOTFIX,
+    Version incrementVersion(DigitPos increment = normal.versionType == VersionType.threeDigits ? DigitPos.PATCH : DigitPos.HOTFIX,
                                     String branchData = '', String buildData = '', String versionExtension = '') {
         MetadataVersion branch = MetadataVersion.NULL
         MetadataVersion build = MetadataVersion.NULL
@@ -472,7 +472,7 @@ class Version implements Comparable<Version> {
      *
      * @return a new instance of the {@code Version} class
      */
-    public Version incrementBuildMetadata() {
+    Version incrementBuildMetadata() {
         return new Version(normal, branchData, buildData.increment())
     }
 
@@ -483,7 +483,7 @@ class Version implements Comparable<Version> {
      * @return a new instance of the {@code Version} class
      * @throws IllegalArgumentException if the input string is {@code NULL} or empty
      */
-    public Version setBranchMetadata(String branchData) {
+    Version setBranchMetadata(String branchData) {
         return new Version(normal, VersionParser.parseBranchData(branchData), buildData)
     }
 
@@ -494,8 +494,8 @@ class Version implements Comparable<Version> {
      * @return a new instance of the {@code Version} class
      * @throws IllegalArgumentException if the input string is {@code NULL} or empty
      */
-    public Version setBuildMetadata(String buildData) {
-        return new Version(normal, branchData, VersionParser.parseBuildData(buildData));
+    Version setBuildMetadata(String buildData) {
+        return new Version(normal, branchData, VersionParser.parseBuildData(buildData))
     }
 
     /**
@@ -505,7 +505,7 @@ class Version implements Comparable<Version> {
      * @return a new Instance of the {@code Version} class
      * @throws IllegalArgumentException if the input string is {@code NULL} or an unsupported extension
      */
-    public Version setVersionExtension(String extension) {
+    Version setVersionExtension(String extension) {
         return new Version(normal, branchData, buildData, VersionParser.parseVersionExtension(extension))
     }
 
@@ -514,8 +514,8 @@ class Version implements Comparable<Version> {
      *
      * @return the major version number
      */
-    public int getMajorVersion() {
-        return normal.getMajor();
+    int getMajorVersion() {
+        return normal.getMajor()
     }
 
     /**
@@ -523,8 +523,8 @@ class Version implements Comparable<Version> {
      *
      * @return the minor version number
      */
-    public int getMinorVersion() {
-        return normal.getMinor();
+    int getMinorVersion() {
+        return normal.getMinor()
     }
 
     /**
@@ -532,8 +532,8 @@ class Version implements Comparable<Version> {
      *
      * @return the patch version number
      */
-    public int getPatchVersion() {
-        return normal.getPatch();
+    int getPatchVersion() {
+        return normal.getPatch()
     }
 
     /**
@@ -541,7 +541,7 @@ class Version implements Comparable<Version> {
      *
      * @return the hotfix version number
      */
-    public int getHotfixVersion() {
+    int getHotfixVersion() {
         if(normal.getVersionType() == VersionType.fourDigits ) {
             return normal.getHotfix()
         } else {
@@ -555,7 +555,7 @@ class Version implements Comparable<Version> {
      *
      * @return the representation of the normal version
      */
-    public NormalVersion getNormalVersion() {
+    NormalVersion getNormalVersion() {
         return normal
     }
 
@@ -564,7 +564,7 @@ class Version implements Comparable<Version> {
      *
      * @return the string representation of the pre-release version
      */
-    public String getBuildMetadata() {
+    String getBuildMetadata() {
         return buildData.toString()
     }
 
@@ -573,11 +573,11 @@ class Version implements Comparable<Version> {
      *
      * @return the string representation of the build metadata
      */
-    public String getBranchMetadata() {
+    String getBranchMetadata() {
         return branchData.toString()
     }
 
-    public String getVersionExtension() {
+    String getVersionExtension() {
         return extension.toString()
     }
 
@@ -586,7 +586,7 @@ class Version implements Comparable<Version> {
      *
      * @return the shortened version string
      */
-    public String toStringFor(int firstdigits) {
+    String toStringFor(int firstdigits) {
         String branchData = getBranchMetadata() ? "${METADATA_SEPARATOR}${getBranchMetadata()}" : ''
         String buildData = getBuildMetadata() ? "${METADATA_SEPARATOR}${getBuildMetadata()}" : ''
         String versionExtension = getVersionExtension() ? "${METADATA_SEPARATOR}${getVersionExtension()}" : ''
@@ -600,7 +600,7 @@ class Version implements Comparable<Version> {
      * Returns the original input str if available
      * otherwise it returns toString
      */
-    public String toStringFromOrg() {
+    String toStringFromOrg() {
         if(orgString) {
             return orgString
         } else {
@@ -611,7 +611,7 @@ class Version implements Comparable<Version> {
     /**
      * Returns a new instance of the version object
      */
-    public Version clone() {
+    Version clone() {
         return new Version(this.normalVersion.clone(), this.branchData.clone(), this.buildData.clone(), this.extension, this.orgString)
     }
 
@@ -619,7 +619,7 @@ class Version implements Comparable<Version> {
      * {@inheritDoc}
      */
     @Override
-    public String toString() {
+    String toString() {
 
         String branchData = getBranchMetadata() ? "${METADATA_SEPARATOR}${getBranchMetadata()}" : ''
         String buildData = getBuildMetadata() ? "${METADATA_SEPARATOR}${getBuildMetadata()}" : ''
@@ -641,12 +641,12 @@ class Version implements Comparable<Version> {
      * @see #compareTo(Version other)
      */
     @Override
-    public boolean equals(Object other) {
+    boolean equals(Object other) {
         if (this == other) {
-            return true;
+            return true
         }
         if (!(other instanceof Version)) {
-            return false;
+            return false
         }
         return compareTo((Version) other) == 0
     }
@@ -655,8 +655,8 @@ class Version implements Comparable<Version> {
      * {@inheritDoc}
      */
     @Override
-    public int hashCode() {
-        int hash = 5;
+    int hashCode() {
+        int hash = 5
         hash = 97 * hash + normal.hashCode()
         hash = 97 * hash + branchData.hashCode()
         hash = 97 * hash + buildData.hashCode()
@@ -673,16 +673,16 @@ class Version implements Comparable<Version> {
      *         is less than, equal to or greater the the specified version
      */
     @Override
-    public int compareTo(Version other) {
-        int result = normal.compareTo(other.normal)
+    int compareTo(Version other) {
+        int result = normal <=> other.normal
         if (result == 0) {
-            result = branchData.compareTo(other.branchData)
+            result = branchData <=> other.branchData
         }
         if (result == 0) {
-            result = buildData.compareTo(other.buildData)
+            result = buildData <=> other.buildData
         }
         if(result == 0) {
-            result = extension.compareTo(other.extension)
+            result = extension <=> other.extension
         }
         return result
     }

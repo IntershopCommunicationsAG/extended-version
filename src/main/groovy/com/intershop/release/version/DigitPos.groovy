@@ -24,25 +24,25 @@ import groovy.transform.CompileStatic
 enum DigitPos {
     MAJOR {
         @Override
-        public String toString() {
+        String toString() {
             return 'MAJOR'
         }
     },
     MINOR {
         @Override
-        public String toString() {
+        String toString() {
             return 'MINOR'
         }
     },
     PATCH {
         @Override
-        public String toString() {
+        String toString() {
             return 'PATCH'
         }
     },
     HOTFIX  {
         @Override
-        public String toString() {
+        String toString() {
             return 'HOTFIX'
         }
     }

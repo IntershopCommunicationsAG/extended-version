@@ -26,7 +26,7 @@ class ParserException extends RuntimeException {
     /**
      * Constructs a {@code ParseException} instance with no error message.
      */
-    public ParserException() {
+    ParserException() {
         super()
     }
 
@@ -35,7 +35,7 @@ class ParserException extends RuntimeException {
      *
      * @param message the error message
      */
-    public ParserException(String message) {
+    ParserException(String message) {
         super(message)
     }
 
@@ -44,7 +44,7 @@ class ParserException extends RuntimeException {
      *
      * @param message the error message
      */
-    public ParserException(String message, Throwable cause) {
+    ParserException(String message, Throwable cause) {
         super(message, cause)
     }
 
@@ -54,7 +54,7 @@ class ParserException extends RuntimeException {
      * @return the string representation of this exception
      */
     @Override
-    public String toString() {
+    String toString() {
         Throwable cause = getCause()
         String msg = getMessage()
         if (msg != null) {

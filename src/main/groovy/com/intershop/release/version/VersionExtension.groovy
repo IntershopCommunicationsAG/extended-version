@@ -26,24 +26,24 @@ import groovy.transform.CompileStatic
 enum VersionExtension {
     LOCAL {
         @Override
-        public String toString() {
+        String toString() {
             return 'LOCAL'
         }
     },
     SNAPSHOT {
         @Override
-        public String toString() {
+        String toString() {
             return 'SNAPSHOT'
         }
     },
     NONE {
         @Override
-        public String toString() {
+        String toString() {
             return ''
         }
     }
 
-    public static VersionExtension getEnum(String s){
+    static VersionExtension getEnum(String s){
         if(SNAPSHOT.toString().equals(s.trim().toLowerCase())){
             return SNAPSHOT
         }else if(LOCAL.toString().equals(s.trim().toLowerCase())){
