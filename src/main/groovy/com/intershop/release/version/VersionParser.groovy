@@ -15,12 +15,15 @@
  */
 package com.intershop.release.version
 
+import groovy.transform.CompileStatic
+
 import java.util.regex.Matcher
 
 /**
  * <p>Version parser</p>
  * <p>Parses a version from a string.</p>
  */
+@CompileStatic
 class VersionParser {
 
     /**
@@ -37,14 +40,14 @@ class VersionParser {
      */
     VersionParser(String input) {
         if(! input) {
-            throw new IllegalArgumentException("Input string is NULL or empty");
+            throw new IllegalArgumentException("Input string is NULL or empty")
         }
         this.input = input
     }
 
-    public Version getVersion(VersionType type = VersionType.threeDigits) {
+    Version getVersion(VersionType type = VersionType.threeDigits) {
         if(! input) {
-            throw new IllegalArgumentException("Input string is NULL or empty");
+            throw new IllegalArgumentException("Input string is NULL or empty")
         } else {
             return parseVersion(input, type)
         }
@@ -62,7 +65,7 @@ class VersionParser {
      *
      * @return a valid version object
      */
-    public static Version parseVersion(String inputStr, VersionType type = VersionType.threeDigits) {
+     static Version parseVersion(String inputStr, VersionType type = VersionType.threeDigits) {
         String[] parsedVersions = new String[3]
 
         int i = inputStr.indexOf('-')
@@ -139,7 +142,7 @@ class VersionParser {
         vnumbers.addAll(versionStr.split('\\.'))
         int start = Math.min(4, vnumbers.size())
 
-        start.upto(4) {
+        (new Integer(start)).upto(4) {
             vnumbers.add('0')
         }
 
@@ -206,9 +209,9 @@ class VersionParser {
 
             Matcher number = (metadataInput =~ /[A-za-z]+\.?([\d]+)$/)
             if(number.size() > 0) {
-                idents.add(metadataInput - number[0][1])
-                idents.add(number[0][1])
-                int identNo = parseDigit(number[0][1], metadataInput)
+                idents.add(metadataInput - (number[0] as List)[1])
+                idents.add((number[0] as List)[1])
+                int identNo = parseDigit((number[0] as List)[1].toString(), metadataInput)
                 idents[idents.size() - 1] = Integer.toString(identNo)
             } else {
                 idents.add(metadataInput)

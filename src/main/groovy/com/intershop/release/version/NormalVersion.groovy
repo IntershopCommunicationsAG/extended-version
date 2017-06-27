@@ -67,7 +67,7 @@ class NormalVersion implements Comparable<NormalVersion> {
         if (major < 0 || minor < 0 || patch < 0 || hotfix < 0) {
             throw new IllegalArgumentException(
                     "Major, minor, patch and hotfix versions MUST be non-negative integers."
-            );
+            )
         }
         this.major = major
         this.minor = minor
@@ -90,7 +90,7 @@ class NormalVersion implements Comparable<NormalVersion> {
         if (major < 0 || minor < 0 || patch < 0 || hotfix < 0) {
             throw new IllegalArgumentException(
                     "Major, minor, patch and hotfix versions MUST be non-negative integers."
-            );
+            )
         }
         this.major = major
         this.minor = minor
@@ -246,7 +246,7 @@ class NormalVersion implements Comparable<NormalVersion> {
      *
      * @return the shortened string representation of this normal version
      */
-    public String toStringFor(int firstDigits) {
+    String toStringFor(int firstDigits) {
         switch (firstDigits) {
             case 1:
                 return String.format("%d", major)
@@ -275,7 +275,7 @@ class NormalVersion implements Comparable<NormalVersion> {
      *
      * @return a new instance of NormalVersion
      */
-    public NormalVersion clone() {
+    NormalVersion clone() {
         if(this.versionType == VersionType.threeDigits) {
             return new NormalVersion(this.major, this.minor, this.patch)
         } else {
@@ -293,7 +293,7 @@ class NormalVersion implements Comparable<NormalVersion> {
      * @return the string representation of this normal version
      */
     @Override
-    public String toString() {
+    String toString() {
         if(type == VersionType.fourDigits) {
             return String.format("%d.%d.%d.%d", major, minor, patch, hotfix)
         } else {
@@ -305,7 +305,7 @@ class NormalVersion implements Comparable<NormalVersion> {
      * {@inheritDoc}
      */
     @Override
-    public int compareTo(NormalVersion other) {
+    int compareTo(NormalVersion other) {
         int result = major - other.major
         if (result == 0) {
             result = minor - other.minor
@@ -323,21 +323,21 @@ class NormalVersion implements Comparable<NormalVersion> {
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(Object other) {
+    boolean equals(Object other) {
         if (this == other) {
             return true
         }
         if (!(other instanceof NormalVersion)) {
             return false
         }
-        return compareTo((NormalVersion) other) == 0;
+        return compareTo((NormalVersion) other) == 0
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public int hashCode() {
+    int hashCode() {
         int hash = 17
         hash = 31 * hash + major
         hash = 31 * hash + minor
