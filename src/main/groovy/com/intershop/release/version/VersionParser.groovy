@@ -207,7 +207,7 @@ class VersionParser {
         if(metadataInput) {
             List idents = []
 
-            Matcher number = (metadataInput =~ /[A-za-z]+\.?([\d]+)$/)
+            Matcher number = (metadataInput =~ /^[A-za-z]+\.?([\d]+)$/)
             if(number.size() > 0) {
                 idents.add(metadataInput - (number[0] as List)[1])
                 idents.add((number[0] as List)[1])

@@ -394,4 +394,13 @@ class VersionSpec extends Specification {
         then:
         v2.equals(Version.forString('1.3.1.0', VersionType.fourDigits))
     }
+
+    def 'test set branch metadata 1'() {
+        when:
+        Version v1 = Version.forString('1.0.0')
+        Version v2 = v1.setBranchMetadata('IS-23188-ExcludeDomPackage')
+
+        then:
+        v2.toString() == "1.0.0-IS-23188-ExcludeDomPackage"
+    }
 }
