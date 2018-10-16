@@ -16,42 +16,41 @@
  * This file includes code fragments from semver (https://github.com/zafarkhaja/jsemver),
  * which is licensed under the MIT license.
  */
-package com.intershop.release.version
+package com.intershop.release.version;
 
-import groovy.transform.CompileStatic
+import javax.annotation.Nonnull;
 
 /**
  * This is the version object without any extension.
  * It is based on SemVer and extended for versioning
  * schema with four digits.
  */
-@CompileStatic
-class NormalVersion implements Comparable<NormalVersion> {
+public class NormalVersion implements Comparable<NormalVersion> {
 
     /**
      * The major version number.
      */
-    private final int major
+    private final int major;
 
     /**
      * The minor version number.
      */
-    private final int minor
+    private final int minor;
 
     /**
      * The patch version number.
      */
-    private final int patch
+    private final int patch;
 
     /**
      * The hotfix version number.
      */
-    private final int hotfix
+    private final int hotfix;
 
     /**
      * Format of the version - four or three digits
      */
-    private final VersionType type
+    private final VersionType type;
 
     /**
      * Constructs a {@code NormalVersion} with the
@@ -63,18 +62,18 @@ class NormalVersion implements Comparable<NormalVersion> {
      * @param hotfix the hotfix version number
      * @throws IllegalArgumentException if one of the version numbers is a negative integer
      */
-    NormalVersion(int major, int minor, int patch, int hotfix) {
+    public NormalVersion(int major, int minor, int patch, int hotfix) {
         if (major < 0 || minor < 0 || patch < 0 || hotfix < 0) {
             throw new IllegalArgumentException(
                     "Major, minor, patch and hotfix versions MUST be non-negative integers."
-            )
+            );
         }
-        this.major = major
-        this.minor = minor
-        this.patch = patch
-        this.hotfix = hotfix
+        this.major = major;
+        this.minor = minor;
+        this.patch = patch;
+        this.hotfix = hotfix;
 
-        type = VersionType.fourDigits
+        type = VersionType.fourDigits;
     }
 
     /**
@@ -86,17 +85,18 @@ class NormalVersion implements Comparable<NormalVersion> {
      * @param patch the patch version number
      * @throws IllegalArgumentException if one of the version numbers is a negative integer
      */
-    NormalVersion(int major, int minor, int patch) {
-        if (major < 0 || minor < 0 || patch < 0 || hotfix < 0) {
+    public NormalVersion(int major, int minor, int patch) {
+        hotfix = 0;
+        if (major < 0 || minor < 0 || patch < 0) {
             throw new IllegalArgumentException(
                     "Major, minor, patch and hotfix versions MUST be non-negative integers."
-            )
+            );
         }
-        this.major = major
-        this.minor = minor
-        this.patch = patch
+        this.major = major;
+        this.minor = minor;
+        this.patch = patch;
 
-        type = VersionType.threeDigits
+        type = VersionType.threeDigits;
     }
 
     /**
@@ -105,7 +105,7 @@ class NormalVersion implements Comparable<NormalVersion> {
      * @return the major version number
      */
     int getMajor() {
-        return major
+        return major;
     }
 
     /**
@@ -114,7 +114,7 @@ class NormalVersion implements Comparable<NormalVersion> {
      * @return the minor version number
      */
     int getMinor() {
-        return minor
+        return minor;
     }
 
     /**
@@ -123,7 +123,7 @@ class NormalVersion implements Comparable<NormalVersion> {
      * @return the patch version number
      */
     int getPatch() {
-        return patch
+        return patch;
     }
 
     /**
@@ -132,7 +132,7 @@ class NormalVersion implements Comparable<NormalVersion> {
      * @return the hotfix version number
      */
     int getHotfix() {
-        return hotfix
+        return hotfix;
     }
 
     /**
@@ -140,8 +140,8 @@ class NormalVersion implements Comparable<NormalVersion> {
      *
      * @return version type
      */
-    VersionType getVersionType() {
-        return type
+    public VersionType getVersionType() {
+        return type;
     }
 
     /**
@@ -149,11 +149,11 @@ class NormalVersion implements Comparable<NormalVersion> {
      *
      * @return a new instance of the {@code NormalVersion} class
      */
-    NormalVersion incrementMajor() {
+    public NormalVersion incrementMajor() {
         if(type == VersionType.fourDigits) {
-            return new NormalVersion(major + 1, 0, 0, 0)
+            return new NormalVersion(major + 1, 0, 0, 0);
         } else {
-            return new NormalVersion(major + 1, 0, 0)
+            return new NormalVersion(major + 1, 0, 0);
         }
     }
 
@@ -162,11 +162,11 @@ class NormalVersion implements Comparable<NormalVersion> {
      *
      * @return a new instance of the {@code NormalVersion} class
      */
-    NormalVersion incrementMinor() {
+    public NormalVersion incrementMinor() {
         if(type == VersionType.fourDigits) {
-            return new NormalVersion(major, minor + 1, 0, 0)
+            return new NormalVersion(major, minor + 1, 0, 0);
         } else {
-            return new NormalVersion(major, minor + 1, 0)
+            return new NormalVersion(major, minor + 1, 0);
         }
     }
 
@@ -175,11 +175,11 @@ class NormalVersion implements Comparable<NormalVersion> {
      *
      * @return a new instance of the {@code NormalVersion} class
      */
-    NormalVersion incrementPatch() {
+    public NormalVersion incrementPatch() {
         if(type == VersionType.fourDigits) {
-            return new NormalVersion(major, minor, patch + 1, 0)
+            return new NormalVersion(major, minor, patch + 1, 0);
         } else {
-            return new NormalVersion(major, minor, patch + 1)
+            return new NormalVersion(major, minor, patch + 1);
         }
     }
 
@@ -188,11 +188,11 @@ class NormalVersion implements Comparable<NormalVersion> {
      *
      * @return a new instance of the {@code NormalVersion} class
      */
-    NormalVersion incrementHotfix() {
+    public NormalVersion incrementHotfix() {
         if(type == VersionType.fourDigits) {
-            return new NormalVersion(major, minor, patch, hotfix + 1)
+            return new NormalVersion(major, minor, patch, hotfix + 1);
         } else {
-            throw  new UnsupportedOperationException('This normal version does not support four digits')
+            throw  new UnsupportedOperationException("This normal version does not support four digits");
         }
     }
 
@@ -201,21 +201,28 @@ class NormalVersion implements Comparable<NormalVersion> {
      *
      * @return a new instance of the {@code NormalVersion} class
      */
-    NormalVersion incrementLatest(DigitPos pos = type == VersionType.threeDigits ? DigitPos.PATCH : DigitPos.HOTFIX) {
+    public NormalVersion incrementLatest() {
+        return incrementLatest(type == VersionType.threeDigits ? DigitPos.PATCH : DigitPos.HOTFIX);
+    }
+
+    /**
+     * Increment the latest non 0 version number.
+     *
+     * @param pos the digit position
+     * @return a new instance of the {@code NormalVersion} class
+     */
+    public NormalVersion incrementLatest(DigitPos pos) {
         switch (pos) {
-            case DigitPos.HOTFIX:
-                return incrementPatch()
-                break
-            case DigitPos.PATCH:
-                incrementMinor()
-                break
-            case DigitPos.MINOR:
-                return incrementMajor()
-                break
-            case DigitPos.MAJOR:
-                return incrementMajor()
-                break
+            case HOTFIX:
+                return incrementPatch();
+            case PATCH:
+                return incrementMinor();
+            case MINOR:
+                return incrementMajor();
+            case MAJOR:
+                return incrementMajor();
         }
+        return this;
     }
 
     /**
@@ -223,22 +230,22 @@ class NormalVersion implements Comparable<NormalVersion> {
      *
      * @return a new instance of the {@code NormalVersion} class
      */
-    NormalVersion incrementVersion(DigitPos pos = type == VersionType.threeDigits ? DigitPos.PATCH : DigitPos.HOTFIX) {
+    public NormalVersion incrementVersion(DigitPos pos) {
+        if (pos == null) {
+            pos = type == VersionType.threeDigits ? DigitPos.PATCH : DigitPos.HOTFIX;
+        }
 
         switch (pos) {
-            case DigitPos.HOTFIX:
-                return incrementHotfix()
-                break
-            case DigitPos.PATCH:
-                return incrementPatch()
-                break
-            case DigitPos.MINOR:
-                return incrementMinor()
-                break
-            case DigitPos.MAJOR:
-                return incrementMajor()
-                break
+            case HOTFIX:
+                return incrementHotfix();
+            case PATCH:
+                return incrementPatch();
+            case MINOR:
+                return incrementMinor();
+            case MAJOR:
+                return incrementMajor();
         }
+        return this;
     }
 
     /**
@@ -246,27 +253,22 @@ class NormalVersion implements Comparable<NormalVersion> {
      *
      * @return the shortened string representation of this normal version
      */
-    String toStringFor(int firstDigits) {
+    public String toStringFor(int firstDigits) {
         switch (firstDigits) {
             case 1:
-                return String.format("%d", major)
-                break
+                return String.format("%d", major);
             case 2:
-                return String.format("%d.%d", major, minor)
-                break
+                return String.format("%d.%d", major, minor);
             case 3:
-                return String.format("%d.%d.%d", major, minor, patch)
-                break
+                return String.format("%d.%d.%d", major, minor, patch);
             case 4:
-                if(versionType == VersionType.threeDigits) {
-                    throw new UnsupportedOperationException('The number of digits must be less than 4.')
+                if(type == VersionType.threeDigits) {
+                    throw new UnsupportedOperationException("The number of digits must be less than 4.");
                 } else {
-                    return String.format("%d.%d.%d.%d", major, minor, patch, hotfix)
+                    return String.format("%d.%d.%d.%d", major, minor, patch, hotfix);
                 }
-                break
             default:
-                throw new UnsupportedOperationException('The number of digits must be greater than 0 and less than 3 or 4, depends on the version type.')
-                break
+                throw new UnsupportedOperationException("The number of digits must be greater than 0 and less than 3 or 4, depends on the version type.");
         }
     }
 
@@ -275,11 +277,11 @@ class NormalVersion implements Comparable<NormalVersion> {
      *
      * @return a new instance of NormalVersion
      */
-    NormalVersion clone() {
-        if(this.versionType == VersionType.threeDigits) {
-            return new NormalVersion(this.major, this.minor, this.patch)
+    public NormalVersion clone() {
+        if(this.type == VersionType.threeDigits) {
+            return new NormalVersion(this.major, this.minor, this.patch);
         } else {
-            return new NormalVersion(this.major, this.minor, this.patch, this.hotfix)
+            return new NormalVersion(this.major, this.minor, this.patch, this.hotfix);
         }
     }
 
@@ -293,11 +295,11 @@ class NormalVersion implements Comparable<NormalVersion> {
      * @return the string representation of this normal version
      */
     @Override
-    String toString() {
+    public String toString() {
         if(type == VersionType.fourDigits) {
-            return String.format("%d.%d.%d.%d", major, minor, patch, hotfix)
+            return String.format("%d.%d.%d.%d", major, minor, patch, hotfix);
         } else {
-            return String.format("%d.%d.%d", major, minor, patch, hotfix)
+            return String.format("%d.%d.%d", major, minor, patch);
         }
     }
 
@@ -305,46 +307,46 @@ class NormalVersion implements Comparable<NormalVersion> {
      * {@inheritDoc}
      */
     @Override
-    int compareTo(NormalVersion other) {
-        int result = major - other.major
+    public int compareTo(@Nonnull NormalVersion other) {
+        int result = major - other.major;
         if (result == 0) {
-            result = minor - other.minor
+            result = minor - other.minor;
             if (result == 0) {
-                result = patch - other.patch
+                result = patch - other.patch;
                 if (result == 0 && type == VersionType.fourDigits) {
-                    result = hotfix - other.hotfix
+                    result = hotfix - other.hotfix;
                 }
             }
         }
-        return result
+        return result;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    boolean equals(Object other) {
+    public boolean equals(Object other) {
         if (this == other) {
-            return true
+            return true;
         }
         if (!(other instanceof NormalVersion)) {
-            return false
+            return false;
         }
-        return compareTo((NormalVersion) other) == 0
+        return compareTo((NormalVersion) other) == 0;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    int hashCode() {
-        int hash = 17
-        hash = 31 * hash + major
-        hash = 31 * hash + minor
-        hash = 31 * hash + patch
+    public int hashCode() {
+        int hash = 17;
+        hash = 31 * hash + major;
+        hash = 31 * hash + minor;
+        hash = 31 * hash + patch;
         if(type == VersionType.fourDigits) {
-            hash = 31 * hash + hotfix
+            hash = 31 * hash + hotfix;
         }
-        return hash
+        return hash;
     }
 }

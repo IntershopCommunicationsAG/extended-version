@@ -13,21 +13,18 @@
  * See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.intershop.release.version
-
-import groovy.transform.CompileStatic
+package com.intershop.release.version;
 
 /**
  * Version parser exception.
  */
-@CompileStatic
-class ParserException extends RuntimeException {
+public class ParserException extends RuntimeException {
 
     /**
      * Constructs a {@code ParseException} instance with no error message.
      */
     ParserException() {
-        super()
+        super();
     }
 
     /**
@@ -36,7 +33,7 @@ class ParserException extends RuntimeException {
      * @param message the error message
      */
     ParserException(String message) {
-        super(message)
+        super(message);
     }
 
     /**
@@ -45,7 +42,7 @@ class ParserException extends RuntimeException {
      * @param message the error message
      */
     ParserException(String message, Throwable cause) {
-        super(message, cause)
+        super(message, cause);
     }
 
     /**
@@ -54,13 +51,13 @@ class ParserException extends RuntimeException {
      * @return the string representation of this exception
      */
     @Override
-    String toString() {
-        Throwable cause = getCause()
-        String msg = getMessage()
+    public String toString() {
+        Throwable cause = getCause();
+        String msg = getMessage();
         if (msg != null) {
-            msg += ((cause != null) ? " (" + cause.toString() + ")" : "")
-            return msg
+            msg += ((cause != null) ? " (" + cause.toString() + ")" : "");
+            return msg;
         }
-        return ((cause != null) ? cause.toString() : "")
+        return ((cause != null) ? cause.toString() : "");
     }
 }
