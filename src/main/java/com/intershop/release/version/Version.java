@@ -406,26 +406,7 @@ public class Version implements Comparable<Version> {
      * @return a new instance of the {@code Version} class
      */
     public Version incrementMajorVersion(String branchData, String buildData, String versionExtension) {
-        MetadataVersion branch;
-        MetadataVersion build;
-        VersionExtension extension;
-
-        if(!Strings.isNullOrEmpty(branchData)) {
-            branch = VersionParser.parseBranchData(branchData);
-        } else {
-            branch = this.branchData;
-        }
-        if(!Strings.isNullOrEmpty(buildData)) {
-            build = VersionParser.parseBuildData(buildData);
-        } else {
-            build = this.buildData;
-        }
-        if(!Strings.isNullOrEmpty(versionExtension)) {
-            extension = VersionParser.parseVersionExtension(versionExtension);
-        } else {
-            extension = this.extension;
-        }
-        return new Version(normal.incrementMajor(), branch, build, extension);
+        return increment(normal.incrementMajor(), branchData, buildData, versionExtension, false);
     }
 
     /**
@@ -453,26 +434,7 @@ public class Version implements Comparable<Version> {
      * @return a new instance of the {@code Version} class
      */
     public Version incrementMinorVersion(String branchData, String buildData, String versionExtension) {
-        MetadataVersion branch;
-        MetadataVersion build;
-        VersionExtension extension;
-
-        if(!Strings.isNullOrEmpty(branchData)) {
-            branch = VersionParser.parseBranchData(branchData);
-        } else {
-            branch = this.branchData;
-        }
-        if(!Strings.isNullOrEmpty(buildData)) {
-            build = VersionParser.parseBuildData(buildData);
-        } else {
-            build = this.buildData;
-        }
-        if(!Strings.isNullOrEmpty(versionExtension)) {
-            extension = VersionParser.parseVersionExtension(versionExtension);
-        } else {
-            extension = this.extension;
-        }
-        return new Version(normal.incrementMinor(), branch, build, extension);
+        return increment(normal.incrementMinor(), branchData, buildData, versionExtension, false);
     }
 
     /**
@@ -500,26 +462,7 @@ public class Version implements Comparable<Version> {
      * @return a new instance of the {@code Version} class
      */
     public Version incrementPatchVersion(String branchData, String buildData, String versionExtension) {
-        MetadataVersion branch;
-        MetadataVersion build;
-        VersionExtension extension;
-
-        if(!Strings.isNullOrEmpty(branchData)) {
-            branch = VersionParser.parseBranchData(branchData);
-        } else {
-            branch = this.branchData;
-        }
-        if(!Strings.isNullOrEmpty(buildData)) {
-            build = VersionParser.parseBuildData(buildData);
-        } else {
-            build = this.buildData;
-        }
-        if(!Strings.isNullOrEmpty(versionExtension)) {
-            extension = VersionParser.parseVersionExtension(versionExtension);
-        } else {
-            extension = this.extension;
-        }
-        return new Version(normal.incrementPatch(), branch, build, extension);
+        return increment(normal.incrementPatch(), branchData, buildData, versionExtension, false);
     }
 
     /**
@@ -547,26 +490,7 @@ public class Version implements Comparable<Version> {
      * @return a new instance of the {@code Version} class
      */
     public Version incrementHotfixVersion(String branchData, String buildData, String versionExtension) {
-        MetadataVersion branch;
-        MetadataVersion build;
-        VersionExtension extension;
-
-        if(!Strings.isNullOrEmpty(branchData)) {
-            branch = VersionParser.parseBranchData(branchData);
-        } else {
-            branch = this.branchData;
-        }
-        if(!Strings.isNullOrEmpty(buildData)) {
-            build = VersionParser.parseBuildData(buildData);
-        } else {
-            build = this.buildData;
-        }
-        if(!Strings.isNullOrEmpty(versionExtension)) {
-            extension = VersionParser.parseVersionExtension(versionExtension);
-        } else {
-            extension = this.extension;
-        }
-        return new Version(normal.incrementHotfix(), branch, build, extension);
+        return increment(normal.incrementHotfix(), branchData, buildData, versionExtension, false);
     }
 
     /**
@@ -585,34 +509,7 @@ public class Version implements Comparable<Version> {
      * return a new instance of the {@code Version} class
      */
     public Version incrementLatest(DigitPos pos, String branchData, String buildData, String versionExtension) {
-        if (pos == null) {
-            pos = normal.getVersionType() == VersionType.threeDigits ? DigitPos.PATCH : DigitPos.HOTFIX;
-        }
-
-        MetadataVersion branch;
-        MetadataVersion build;
-        VersionExtension extension;
-
-        if(!Strings.isNullOrEmpty(branchData)) {
-            branch = VersionParser.parseBranchData(branchData);
-        } else {
-            branch = this.branchData;
-        }
-        if(!Strings.isNullOrEmpty(buildData)) {
-            build = VersionParser.parseBuildData(buildData);
-        } else {
-            build = this.buildData;
-        }
-        if(!Strings.isNullOrEmpty(versionExtension)) {
-            extension = VersionParser.parseVersionExtension(versionExtension);
-        } else {
-            extension = this.extension;
-        }
-
-        if(!MetadataVersion.isEmpty(build))  {
-            return new Version(normal, branch, build.increment(), extension);
-        }
-        return new Version(normal.incrementLatest(pos), branch, build, extension);
+         return increment(normal.incrementLatest(pos), branchData, buildData, versionExtension, true);
     }
 
     /**
@@ -641,30 +538,7 @@ public class Version implements Comparable<Version> {
      * @return a new instance of the {@code Version} class
      */
     public Version incrementVersion(DigitPos increment, String branchData, String buildData, String versionExtension) {
-        MetadataVersion branch;
-        MetadataVersion build;
-        VersionExtension extension;
-
-        if(!Strings.isNullOrEmpty(branchData)) {
-            branch = VersionParser.parseBranchData(branchData);
-        } else {
-            branch = this.branchData;
-        }
-        if(!Strings.isNullOrEmpty(buildData)) {
-            build = VersionParser.parseBuildData(buildData);
-        } else {
-            build = this.buildData;
-        }
-        if(!Strings.isNullOrEmpty(versionExtension)) {
-            extension = VersionParser.parseVersionExtension(versionExtension);
-        } else {
-            extension = this.extension;
-        }
-
-        if(!MetadataVersion.isEmpty(build)) {
-            return new Version(normal, branch, build.increment(), extension);
-        }
-        return new Version(normal.incrementVersion(increment), branch, build, extension);
+        return increment(normal.incrementVersion(increment), branchData, buildData, versionExtension, true);
     }
 
     /**
@@ -674,6 +548,34 @@ public class Version implements Comparable<Version> {
      */
     public Version incrementBuildMetadata() {
         return new Version(normal, branchData, buildData.increment());
+    }
+
+    private Version increment(NormalVersion normalNew, String branchDataNew, String buildDataNew, String extensionNew, boolean incrementBuild) {
+        MetadataVersion branch;
+        MetadataVersion build;
+        VersionExtension extension;
+
+        if(!Strings.isNullOrEmpty(branchDataNew)) {
+            branch = VersionParser.parseBranchData(branchDataNew);
+        } else {
+            branch = this.branchData;
+        }
+        if(!Strings.isNullOrEmpty(buildDataNew)) {
+            build = VersionParser.parseBuildData(buildDataNew);
+        } else {
+            build = this.buildData;
+        }
+        if(!Strings.isNullOrEmpty(extensionNew)) {
+            extension = VersionParser.parseVersionExtension(extensionNew);
+        } else {
+            extension = this.extension;
+        }
+
+        if (incrementBuild && !MetadataVersion.isEmpty(build)) {
+            return new Version(normal, branch, build.increment(), extension);
+        }
+
+        return new Version(normalNew, branch, build, extension);
     }
 
     /**
