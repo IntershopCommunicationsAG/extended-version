@@ -180,6 +180,7 @@ dependencies {
     testCompile('org.spockframework:spock-core:1.0-groovy-2.4') {
         exclude group: 'org.codehaus.groovy'
     }
+    compile 'com.google.guava:guava:26.0-jre'
 }
 
 repositories {

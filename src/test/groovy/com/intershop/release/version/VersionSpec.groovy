@@ -86,7 +86,7 @@ class VersionSpec extends Specification {
         Version v = Version.valueOf('1.2.3.4-alpha')
 
         then:
-        'alpha' == v.getBranchMetadata()
+        'alpha' == v.getBranchMetadata().toString()
     }
 
     def 'Version has prefix'() {
@@ -94,8 +94,8 @@ class VersionSpec extends Specification {
         Version v = Version.valueOf('1.2.3.4-featurebranch-rc1')
 
         then:
-        'featurebranch' == v.getBranchMetadata()
-        'rc1' == v.getBuildMetadata()
+        'featurebranch' == v.getBranchMetadata().toString()
+        'rc1' == v.getBuildMetadata().toString()
     }
 
     def 'Version is featurebranch with jira issue'() {
@@ -103,8 +103,8 @@ class VersionSpec extends Specification {
         Version v = Version.valueOf('1.2.3.4-featurebranch-rc1')
 
         then:
-        'featurebranch' == v.getBranchMetadata()
-        'rc1' == v.getBuildMetadata()
+        'featurebranch' == v.getBranchMetadata().toString()
+        'rc1' == v.getBuildMetadata().toString()
     }
 
     def 'Parse version string 4 digits'() {
@@ -159,14 +159,14 @@ class VersionSpec extends Specification {
 
     def 'compare complex versions'() {
         when:
-        Version v1o = Version.valueOf(v1)
-        Version v2o = Version.valueOf(v2)
+        Version v1 = Version.valueOf(vStr1)
+        Version v2 = Version.valueOf(vStr2)
 
         then:
-        v1o.compareTo(v2o) > 0
+        v1.compareTo(v2) > 0
 
         where:
-        v1                      | v2
+        vStr1                   | vStr2
         '1.0.0.0-rc.2'          | '1.0.0.0-rc.1'
         '1.0.0.0-fb-1-rc.2'     | '1.0.0.0-fb-1-rc.1'
         '1.0.0.0-fb-1-SNAPSHOT' | '1.0.0.0-fb-1-LOCAL'

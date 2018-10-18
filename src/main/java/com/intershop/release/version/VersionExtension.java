@@ -13,42 +13,47 @@
  * See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.intershop.release.version
-
-import groovy.transform.CompileStatic
+package com.intershop.release.version;
 
 /**
  * Version extension that will be supported by this
  * version implementation. It is based on SemVer.
  * This adds special version extension - SNAPSHOT and LOCAL.
  */
-@CompileStatic
-enum VersionExtension {
+public enum VersionExtension {
     LOCAL {
         @Override
-        String toString() {
-            return 'LOCAL'
+        public String toString() {
+            return "LOCAL";
         }
     },
     SNAPSHOT {
         @Override
-        String toString() {
-            return 'SNAPSHOT'
+        public String toString() {
+            return "SNAPSHOT";
         }
     },
     NONE {
         @Override
-        String toString() {
-            return ''
+        public String toString() {
+            return "";
         }
-    }
+    };
 
     static VersionExtension getEnum(String s){
         if(SNAPSHOT.toString().equals(s.trim().toLowerCase())){
-            return SNAPSHOT
+            return SNAPSHOT;
         }else if(LOCAL.toString().equals(s.trim().toLowerCase())){
-            return LOCAL
+            return LOCAL;
         }
-        return NONE
+        return NONE;
+    }
+
+    /**
+     * @param versionExtension VersionExtension to check
+     * @return true if there is no metadata.
+     */
+    public static boolean isEmpty(VersionExtension versionExtension) {
+        return versionExtension == null || versionExtension == NONE;
     }
 }

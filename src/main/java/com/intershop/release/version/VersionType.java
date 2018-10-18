@@ -13,37 +13,24 @@
  * See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.intershop.release.version
-
-import groovy.transform.CompileStatic
+package com.intershop.release.version;
 
 /**
- * The names of all digits of a version number.
+ * Version types that will be supported by this
+ * version implementation. It is based on SemVer (three digits)
+ * and extended (four digits).
  */
-@CompileStatic
-enum DigitPos {
-    MAJOR {
+public enum VersionType {
+    threeDigits {
         @Override
-        String toString() {
-            return 'MAJOR'
+        public String toString() {
+            return "three digits";
         }
     },
-    MINOR {
+    fourDigits {
         @Override
-        String toString() {
-            return 'MINOR'
-        }
-    },
-    PATCH {
-        @Override
-        String toString() {
-            return 'PATCH'
-        }
-    },
-    HOTFIX  {
-        @Override
-        String toString() {
-            return 'HOTFIX'
+        public String toString() {
+            return "four digits";
         }
     }
 }
