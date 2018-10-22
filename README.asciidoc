@@ -1,5 +1,5 @@
 = Extended Version Library
-:latestRevision: 3.0.0-dev1
+:latestRevision: 3.0.0
 :toc:
 :sectnums:
 
