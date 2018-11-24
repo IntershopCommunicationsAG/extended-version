@@ -18,9 +18,8 @@
  */
 package com.intershop.release.version;
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
-
-import com.google.common.base.Strings;
 
 /**
  * This class contains metadata for the version object. It can be a short
@@ -89,7 +88,7 @@ public class MetadataVersion implements Comparable<MetadataVersion> {
      */
     @Override
     public MetadataVersion clone() {
-        if(!Strings.isNullOrEmpty(toString())) {
+        if(! toString().isEmpty()) {
             return new MetadataVersion(this.identifiers.clone());
         } else {
             return NULL;
@@ -132,7 +131,7 @@ public class MetadataVersion implements Comparable<MetadataVersion> {
      * {@inheritDoc}
      */
     @Override
-   public int compareTo(MetadataVersion other) {
+   public int compareTo(@Nonnull MetadataVersion other) {
         if (other.isEmpty() && !this.isEmpty()) {
             return -1;
         } else if(other.isEmpty() && this.isEmpty()) {

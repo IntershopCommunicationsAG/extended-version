@@ -16,15 +16,12 @@
 package com.intershop.release.version;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
-
-import com.google.common.base.Splitter;
-import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 
 /**
  * <p>Version parser</p>
@@ -44,7 +41,7 @@ public class VersionParser {
      * @throws IllegalArgumentException if the input string is {@code NULL} or empty
      */
     public VersionParser(String input) {
-        if(Strings.isNullOrEmpty(input)) {
+        if(input == null || input.isEmpty()) {
             throw new IllegalArgumentException("Input string is NULL or empty");
         }
         this.input = input;
@@ -55,7 +52,7 @@ public class VersionParser {
     }
 
     public Version getVersion(VersionType type) {
-        if(Strings.isNullOrEmpty(input)) {
+        if(input == null || input.isEmpty()) {
             throw new IllegalArgumentException("Input string is NULL or empty");
         } else {
             return parseVersion(input, type);
@@ -114,7 +111,7 @@ public class VersionParser {
 
         VersionExtension extension = VersionExtension.NONE;
 
-        if(!Strings.isNullOrEmpty(metadata)) {
+        if(! metadata.isEmpty()) {
             String testStr = metadata.toLowerCase();
             String metadataStr = metadata;
 
@@ -136,12 +133,12 @@ public class VersionParser {
                     metadataStr = metadata.substring(0, metadata.length() - "-local".length());
                 }
             }
-            if(!Strings.isNullOrEmpty(metadataStr)) {
+            if(! metadataStr.isEmpty()) {
                 Matcher buildInfoGroup = Pattern.compile("([A-Za-z]+\\.?[\\d]+$)").matcher(metadataStr);
                 if (buildInfoGroup.find()) {
                     parsedVersions[2] = buildInfoGroup.group(1);
                     String removeTail = buildInfoGroup.replaceAll("");
-                    if (!Strings.isNullOrEmpty(removeTail)) {
+                    if(removeTail != null && ! removeTail.isEmpty()) {
                         parsedVersions[1] = metadataStr.replace("-" + parsedVersions[2], "");
                     }
                 } else {
@@ -169,7 +166,8 @@ public class VersionParser {
      * @return a valid normal version object
      */
     public static NormalVersion parseNormalVersion(String versionStr, VersionType type) {
-        List<String> vnumbers = new ArrayList<>(Lists.newArrayList(Splitter.on(".").split(versionStr)));
+        ArrayList<String> vnumbers = new ArrayList<>(Arrays.asList(versionStr.split("\\.")));
+
         int start = Math.min(4, vnumbers.size());
 
         for (int i = start; i <= 4; i++) {
@@ -234,7 +232,7 @@ public class VersionParser {
     public static MetadataVersion parseMetadataVersion(String metadataInput) {
         MetadataVersion mdVersion = MetadataVersion.NULL;
 
-        if(!Strings.isNullOrEmpty(metadataInput)) {
+        if(metadataInput != null && ! metadataInput.isEmpty()) {
             List<String> identifiers = new ArrayList<>();
 
             Matcher metadataMatcher = Pattern.compile("^(?<name>[A-Za-z]+\\.?)(?<number>[\\d]+)$").matcher(metadataInput);
@@ -253,7 +251,7 @@ public class VersionParser {
     }
 
     private static int parseDigit(String digit, String input) {
-        if(Strings.isNullOrEmpty(digit)) {
+        if(digit == null || digit.isEmpty()) {
             throw new ParserException("One part of the version is empty");
         }
         if(digit.length() > 1 && digit.startsWith("0")) {

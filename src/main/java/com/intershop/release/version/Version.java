@@ -20,8 +20,6 @@ package com.intershop.release.version;
 
 import javax.annotation.Nonnull;
 
-import com.google.common.base.Strings;
-
 /**
  * This is the version object with all additional extensions for feature branches and milestones.
  * It is based on SemVer and extended for versioning schema with four digits.
@@ -555,17 +553,17 @@ public class Version implements Comparable<Version> {
         MetadataVersion build;
         VersionExtension extension;
 
-        if(!Strings.isNullOrEmpty(branchDataNew)) {
+        if(branchDataNew != null && !branchDataNew.isEmpty()) {
             branch = VersionParser.parseBranchData(branchDataNew);
         } else {
             branch = this.branchData;
         }
-        if(!Strings.isNullOrEmpty(buildDataNew)) {
+        if(buildDataNew != null && !buildDataNew.isEmpty()) {
             build = VersionParser.parseBuildData(buildDataNew);
         } else {
             build = this.buildData;
         }
-        if(!Strings.isNullOrEmpty(extensionNew)) {
+        if(extensionNew != null && !extensionNew.isEmpty()) {
             extension = VersionParser.parseVersionExtension(extensionNew);
         } else {
             extension = this.extension;
@@ -696,7 +694,7 @@ public class Version implements Comparable<Version> {
      * otherwise it returns toString
      */
     public String toStringFromOrg() {
-        if(!Strings.isNullOrEmpty(orgString)) {
+        if(orgString != null && !orgString.isEmpty()) {
             return orgString;
         } else {
             return this.toString();
