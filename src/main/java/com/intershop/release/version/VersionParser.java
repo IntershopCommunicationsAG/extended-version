@@ -168,7 +168,7 @@ public class VersionParser {
      *
      * @return a valid normal version object
      */
-    private static NormalVersion parseNormalVersion(String versionStr, VersionType type) {
+    public static NormalVersion parseNormalVersion(String versionStr, VersionType type) {
         List<String> vnumbers = new ArrayList<>(Lists.newArrayList(Splitter.on(".").split(versionStr)));
         int start = Math.min(4, vnumbers.size());
 
@@ -231,7 +231,7 @@ public class VersionParser {
         return VersionExtension.valueOf(extension);
     }
 
-    private static MetadataVersion parseMetadataVersion(String metadataInput) {
+    public static MetadataVersion parseMetadataVersion(String metadataInput) {
         MetadataVersion mdVersion = MetadataVersion.NULL;
 
         if(!Strings.isNullOrEmpty(metadataInput)) {

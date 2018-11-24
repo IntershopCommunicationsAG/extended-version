@@ -57,7 +57,7 @@ public class Version implements Comparable<Version> {
      * A separator that separates the pre-release
      * version from the normal version.
      */
-    private static final String METADATA_SEPARATOR = "-";
+    public static final String METADATA_SEPARATOR = "-";
 
     /**
      * A mutable builder for the immutable {@code Version} class.
