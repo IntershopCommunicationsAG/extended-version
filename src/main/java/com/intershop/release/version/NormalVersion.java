@@ -104,7 +104,7 @@ public class NormalVersion implements Comparable<NormalVersion> {
      *
      * @return the major version number
      */
-    int getMajor() {
+    public int getMajor() {
         return major;
     }
 
@@ -113,7 +113,7 @@ public class NormalVersion implements Comparable<NormalVersion> {
      *
      * @return the minor version number
      */
-    int getMinor() {
+    public int getMinor() {
         return minor;
     }
 
@@ -122,7 +122,7 @@ public class NormalVersion implements Comparable<NormalVersion> {
      *
      * @return the patch version number
      */
-    int getPatch() {
+    public int getPatch() {
         return patch;
     }
 
@@ -131,7 +131,7 @@ public class NormalVersion implements Comparable<NormalVersion> {
      *
      * @return the hotfix version number
      */
-    int getHotfix() {
+    public int getHotfix() {
         return hotfix;
     }
 
