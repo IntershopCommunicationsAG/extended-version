@@ -106,12 +106,10 @@ class VersionParserSpec extends Specification {
     def 'No leading zero for build data'() {
         when:
         VersionParser parser = new VersionParser('1.0.0.0-suffix.01')
-        parser.getVersion()
+        Version v = parser.getVersion()
 
         then:
-        def e = thrown(ParserException)
-        e.message == 'Numeric identifier MUST NOT contain leading zeroes (01 in suffix.01)'
-        e.cause == null
+        v.toString() == '1.0.0.0-suffix.1'
     }
 
     def 'No empty digit'() {

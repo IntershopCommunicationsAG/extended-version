@@ -238,7 +238,7 @@ public class VersionParser {
             Matcher metadataMatcher = Pattern.compile("^(?<name>[A-Za-z]+\\.?)(?<number>[\\d]+)$").matcher(metadataInput);
             if(metadataMatcher.matches()) {
                 identifiers.add(metadataMatcher.group("name"));
-                int identNo = parseDigit(metadataMatcher.group("number"), metadataInput);
+                int identNo = new Integer(metadataMatcher.group("number"));
                 identifiers.add(Integer.toString(identNo));
             } else {
                 identifiers.add(metadataInput);
