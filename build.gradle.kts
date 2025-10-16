@@ -47,7 +47,7 @@ description = "Extended version library for version handling"
 val projectVersion : String? by project
 version = projectVersion ?: "LOCAL"
 
-val sonatypeUsername: String by project
+val sonatypeUsername: String? by project
 val sonatypePassword: String? by project
 
 repositories {
