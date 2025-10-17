@@ -1,4 +1,5 @@
 import org.asciidoctor.gradle.jvm.AsciidoctorTask
+import io.gitee.pkmer.enums.PublishingType
 
 /*
  * Copyright 2020 Intershop Communications AG.
@@ -34,24 +35,31 @@ plugins {
     signing
 
     // plugin for documentation
-    id("org.asciidoctor.jvm.convert") version "3.3.2"
+    id("org.asciidoctor.jvm.convert") version "4.0.5"
+
+    id("io.gitee.pkmer.pkmerboot-central-publisher") version "1.1.1"
 }
 
 
 group = "com.intershop.gradle.version"
 description = "Extended version library for version handling"
-version = "3.1.0"
+// apply gradle property 'projectVersion' to project.version, default to 'LOCAL'
+val projectVersion : String? by project
+version = projectVersion ?: "LOCAL"
 
-val sonatypeUsername: String by project
+val sonatypeUsername: String? by project
 val sonatypePassword: String? by project
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
 
 java {
     withJavadocJar()
     withSourcesJar()
-
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
-        vendor.set(JvmVendorSpec.ADOPTOPENJDK)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
@@ -60,49 +68,28 @@ if (project.version.toString().endsWith("-SNAPSHOT")) {
     status = "snapshot'"
 }
 
-
-    tasks.withType<JavaCompile>().configureEach {
-        javaCompiler.set(javaToolchains.compilerFor {
-            languageVersion.set(JavaLanguageVersion.of(8))
-        })
-    }
-
-    tasks.withType<Javadoc>().configureEach {
-        javadocTool.set(javaToolchains.javadocToolFor {
-            languageVersion.set(JavaLanguageVersion.of(8))
-        })
-        if (options is StandardJavadocDocletOptions) {
-            val opt = options as StandardJavadocDocletOptions
-            // without the -quiet option, the build fails
-            opt.addStringOption("Xdoclint:none", "-quiet")
-            opt.links("https://docs.oracle.com/en/java/javase/11/docs/api/")
-            opt.setEncoding("UTF-8")
+testing {
+    suites {
+        val test by getting(JvmTestSuite::class) {
+            useSpock()
         }
     }
-
-    tasks.withType<Test>().configureEach {
-
-        javaLauncher.set(javaToolchains.launcherFor {
-            languageVersion.set(JavaLanguageVersion.of(8))
-        })
-        useJUnitPlatform()
-    }
+}
 
 tasks {
     val copyAsciiDoc = register<Copy>("copyAsciiDoc") {
         includeEmptyDirs = false
 
-        val outputDir = file("$buildDir/tmp/asciidoctorSrc")
-        val inputFiles = fileTree(rootDir) {
-            include("**/*.asciidoc")
-            exclude("build/**")
-        }
+        val outputDir = project.layout.buildDirectory.dir("tmp/asciidoctorSrc")
+        val inputFiles = fileTree(mapOf("dir" to rootDir,
+            "include" to listOf("**/*.asciidoc"),
+            "exclude" to listOf("build/**")))
 
-        inputs.files.plus( inputFiles )
-        outputs.dir( outputDir )
+        inputs.files.plus(inputFiles)
+        outputs.dir(outputDir)
 
         doFirst {
-            outputDir.mkdir()
+            outputDir.get().asFile.mkdir()
         }
 
         from(inputFiles)
@@ -112,7 +99,7 @@ tasks {
     withType<AsciidoctorTask> {
         dependsOn(copyAsciiDoc)
 
-        setSourceDir(file("$buildDir/tmp/asciidoctorSrc"))
+        setSourceDir(project.layout.buildDirectory.dir("tmp/asciidoctorSrc"))
         sources(delegateClosureOf<PatternSet> {
             include("README.asciidoc")
         })
@@ -121,10 +108,12 @@ tasks {
             setBackends(listOf("html5", "docbook"))
         }
 
-        options = mapOf( "doctype" to "article",
-            "ruby"    to "erubis")
-        attributes = mapOf(
-            "latestRevision"        to  project.version,
+        setOptions(mapOf(
+            "doctype"               to "article",
+            "ruby"                  to "erubis"
+        ))
+        setAttributes(mapOf(
+            "latestRevision"        to project.version,
             "toc"                   to "left",
             "toclevels"             to "2",
             "source-highlighter"    to "coderay",
@@ -132,7 +121,8 @@ tasks {
             "setanchors"            to "true",
             "idprefix"              to "asciidoc",
             "idseparator"           to "-",
-            "docinfo1"              to "true")
+            "docinfo1"              to "true"
+        ))
     }
 
     withType<JacocoReport> {
@@ -140,29 +130,44 @@ tasks {
             xml.required.set(true)
             html.required.set(true)
 
-            html.outputLocation.set( File(project.buildDir, "jacocoHtml"))
+            html.outputLocation.set(project.layout.buildDirectory.dir("jacocoHtml"))
         }
 
-        val jacocoTestReport by tasks
-        jacocoTestReport.dependsOn("test")
+        dependsOn(test)
     }
 
-    getByName("jar").dependsOn("asciidoctor")
+    jar.configure {
+        dependsOn(asciidoctor)
+    }
+
+    withType<Sign> {
+        val sign = this
+        withType<PublishToMavenLocal> {
+            this.dependsOn(sign)
+        }
+        withType<PublishToMavenRepository> {
+            this.dependsOn(sign)
+        }
+    }
 }
+
+val stagingRepoDir = project.layout.buildDirectory.dir("stagingRepo")
 
 publishing {
     publications {
         create("intershopMvn", MavenPublication::class.java) {
+
             from(components["java"])
 
-            artifact(File(buildDir, "docs/asciidoc/html5/README.html")) {
+            artifact(project.layout.buildDirectory.file("docs/asciidoc/html5/README.html")) {
                 classifier = "reference"
             }
 
-            artifact(File(buildDir, "docs/asciidoc/docbook/README.xml")) {
+            artifact(project.layout.buildDirectory.file("docs/asciidoc/docbook/README.xml")) {
                 classifier = "docbook"
             }
-
+        }
+        withType<MavenPublication>().configureEach {
             pom {
                 name.set(project.name)
                 description.set(project.description)
@@ -186,7 +191,7 @@ publishing {
                     }
                 }
                 scm {
-                    connection.set("git@github.com:IntershopCommunicationsAG/${project.name}.git")
+                    connection.set("https://github.com/IntershopCommunicationsAG/${project.name}.git")
                     developerConnection.set("git@github.com:IntershopCommunicationsAG/${project.name}.git")
                     url.set("https://github.com/IntershopCommunicationsAG/${project.name}")
                 }
@@ -194,15 +199,29 @@ publishing {
         }
     }
     repositories {
-        maven {
-            val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
-            val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
-            url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
-            credentials {
-                username = sonatypeUsername
-                password = sonatypePassword
+        repositories {
+            maven {
+                name = "LOCAL"
+                url = stagingRepoDir.get().asFile.toURI()
             }
         }
+    }
+}
+
+pkmerBoot {
+    sonatypeMavenCentral{
+        // the same with publishing.repositories.maven.url in the configuration.
+        stagingRepository = stagingRepoDir
+
+        /**
+         * get username and password from
+         * <a href="https://central.sonatype.com/account"> central sonatype account</a>
+         */
+        username = sonatypeUsername
+        password = sonatypePassword
+
+        // Optional the publishingType default value is PublishingType.AUTOMATIC
+        publishingType = PublishingType.USER_MANAGED
     }
 }
 
@@ -211,13 +230,8 @@ signing {
 }
 
 dependencies {
-    testImplementation("org.spockframework:spock-core:2.1-groovy-3.0")
+    testImplementation(platform("org.spockframework:spock-bom:2.4-M6-groovy-4.0"))
+    testImplementation("org.spockframework:spock-junit4")
 
-    implementation("javax.annotation:javax.annotation-api:1.2")
-    implementation("com.google.code.findbugs:jsr305:3.0.2")
-}
-
-repositories {
-    mavenCentral()
-    mavenLocal()
+    implementation("com.github.spotbugs:spotbugs-annotations:4.9.6")
 }

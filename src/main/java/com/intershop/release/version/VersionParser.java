@@ -60,12 +60,12 @@ public class VersionParser {
     }
 
     /**
-     * Parse the (@literal <partial version> non-terminal.
+     * Parse the {@code partial version} non-terminal.
      *
-     * {@literal
-     * <valid version> ::= <version core>
-     *                  |  <version core> "-" <builddata>
-     *                  |  <version core> "-" <branchdata> "-" <builddata>
+     * <pre>
+     * &lt;valid version&gt; ::= &lt;version core&gt;
+     *                  |  &lt;version core&gt; "-" &lt;builddata&gt;
+     *                  |  &lt;version core&gt; "-" &lt;branchdata&gt; "-" &lt;builddata&gt;
      * }
      * </pre>
      *
@@ -77,12 +77,12 @@ public class VersionParser {
 
 
     /**
-     * Parse the (@literal <partial version> non-terminal.
+     * Parse the {@code partial version} non-terminal.
      *
-     * {@literal
-     * <valid version> ::= <version core>
-     *                  |  <version core> "-" <builddata>
-     *                  |  <version core> "-" <branchdata> "-" <builddata>
+     * <pre>
+     * &lt;valid version&gt; ::= &lt;version core&gt;
+     *                  |  &lt;version core&gt; "-" &lt;builddata&gt;
+     *                  |  &lt;version core&gt; "-" &lt;branchdata&gt; "-" &lt;builddata&gt;
      * }
      * </pre>
      *
@@ -238,7 +238,7 @@ public class VersionParser {
             Matcher metadataMatcher = Pattern.compile("^(?<name>[A-Za-z]+\\.?)(?<number>[\\d]+)$").matcher(metadataInput);
             if(metadataMatcher.matches()) {
                 identifiers.add(metadataMatcher.group("name"));
-                int identNo = new Integer(metadataMatcher.group("number"));
+                int identNo = Integer.parseInt(metadataMatcher.group("number"));
                 identifiers.add(Integer.toString(identNo));
             } else {
                 identifiers.add(metadataInput);
