@@ -35,6 +35,12 @@ plugins {
     signing
 
     // plugin for documentation
+    // NOTE: 4.0.5 (Aug 2025) is the latest release; its internal 'grolifant' library still calls the
+    // deprecated StartParameter.isConfigurationCacheRequested, which will be removed in Gradle 10.
+    // There is no alternative plugin (the xbib fork is broken on Gradle 9, all other asciidoc
+    // plugins are generators, not renderers). An org.asciidoctor 5.0.0-alpha.1 line exists since
+    // Sep 2025, so a final 5.x is expected to be available by the time Gradle 10 is released -
+    // upgrade to it then.
     id("org.asciidoctor.jvm.convert") version "4.0.5"
 
     id("io.gitee.pkmer.pkmerboot-central-publisher") version "1.1.1"
@@ -44,11 +50,11 @@ plugins {
 group = "com.intershop.gradle.version"
 description = "Extended version library for version handling"
 // apply gradle property 'projectVersion' to project.version, default to 'LOCAL'
-val projectVersion : String? by project
+val projectVersion = project.findProperty("projectVersion") as String?
 version = projectVersion ?: "LOCAL"
 
-val sonatypeUsername: String? by project
-val sonatypePassword: String? by project
+val sonatypeUsername = project.findProperty("sonatypeUsername") as String?
+val sonatypePassword = project.findProperty("sonatypePassword") as String?
 
 repositories {
     mavenLocal()
@@ -68,9 +74,26 @@ if (project.version.toString().endsWith("-SNAPSHOT")) {
     status = "snapshot'"
 }
 
+/*
+ * Gradle 9.7.1 bundles Groovy 4.0.32. The Groovy plugin's automatic groovyClasspath inference can
+ * therefore pick Groovy 4, which is incompatible with spock-bom 2.4-groovy-5.0 and makes Spock's
+ * global AST transform abort with IncompatibleGroovyVersionException.
+ *
+ * Fix: use a dedicated, isolated configuration that contains *only* Groovy 5 as the compiler
+ * classpath, so the Groovy compiler and Spock's AST transform both see Groovy 5.
+ */
+val groovyCompiler: Configuration = configurations.create("groovyCompiler") {
+    isCanBeConsumed = false
+    isCanBeResolved = true
+}
+
+tasks.withType<GroovyCompile>().configureEach {
+    groovyClasspath = groovyCompiler
+}
+
 testing {
     suites {
-        val test by getting(JvmTestSuite::class) {
+        getByName<JvmTestSuite>("test") {
             useSpock()
         }
     }
@@ -229,9 +252,25 @@ signing {
     sign(publishing.publications["intershopMvn"])
 }
 
+// dependency versions
+val groovyVersion = "5.1.2"
+val spockVersion = "2.4-groovy-5.0"
+
 dependencies {
-    testImplementation(platform("org.spockframework:spock-bom:2.4-M6-groovy-4.0"))
+    testImplementation(platform("org.spockframework:spock-bom:$spockVersion"))
+    // groovy-bom aligns all groovy modules on one version - spock-bom would otherwise pull an older
+    // Groovy transitively, which would not match the groovyCompiler classpath
+    testImplementation(platform("org.apache.groovy:groovy-bom:$groovyVersion"))
+    testImplementation("org.apache.groovy:groovy")
     testImplementation("org.spockframework:spock-junit4")
 
-    implementation("com.github.spotbugs:spotbugs-annotations:4.9.6")
+    implementation("com.github.spotbugs:spotbugs-annotations:4.10.4")
+
+    // isolated Groovy compiler classpath - see the groovyCompiler configuration above
+    groovyCompiler(platform("org.apache.groovy:groovy-bom:$groovyVersion"))
+    groovyCompiler("org.apache.groovy:groovy")
+    groovyCompiler("org.apache.groovy:groovy-ant")
+    groovyCompiler("org.apache.groovy:groovy-json")
+    groovyCompiler("org.apache.groovy:groovy-xml")
+    groovyCompiler("org.apache.groovy:groovy-templates")
 }
